@@ -31,7 +31,9 @@ def just_country_info():
     # country = CountryInfo().all()
     # country_pops = {k:v.get('population',0) for (k,v) in country.items()}
     total_population, num_items,entropy = population_entropy(country_pops)
-    print(f"Just country information provides {entropy} bits of entropy. It would be {log2(num_items)} if all the possibilities were equal. {log2(total_population)} would be required for unique identification")
+    return (f"Just country information provides {entropy} bits of entropy. "
+        f"It would be {log2(num_items)} if all the possibilities were equal. "
+        f"{log2(total_population)} would be required for unique identification.")
 
 def get_all_cities(limit=None,failLoud=True):
     query = """
@@ -84,9 +86,7 @@ def get_city_wikidata(city, country, failLoud=True):
         out = res['results']['bindings']
     except Exception as e:
         if failLoud:
-            print(f'Caught exception in working on {city},{country}')
             traceback.print_exc()
-            print()
         out = None
     if out is None:
         out = []
@@ -126,11 +126,8 @@ def just_city_info(all_cities=None,limit=None):
         all_cities = get_all_cities(limit,failLoud=False)
     else:
         limit = len(all_cities)
-    if not(limit is None):
-        print(f"Only using the following cities : {all_cities}")
-    else:
+    if limit is None:
         limit = len(all_cities)
-        print("All {limit} cities available on WikiData")
     city_pops = {}
     with Pool() as pool:
         jobs = [ apply_async(pool, lambda x, y, z: get_city_population(x,y,z), (city[0], city[1], False )) for city in all_cities ]
@@ -140,7 +137,9 @@ def just_city_info(all_cities=None,limit=None):
                 city_pops.update(current_dict)
     try:
         total_population, num_items,entropy = population_entropy(city_pops)
-        print(f"Just city information provides {entropy} bits of entropy. It would be {log2(num_items)} if all the possibilities were equal. {log2(total_population)} would be required for unique identification")
+        return (f"Just city information provides {entropy} bits of entropy. "
+                f"It would be {log2(num_items)} if all the possibilities were equal. "
+                f"{log2(total_population)} would be required for unique identification")
     except ValueError as e:
         breakpoint()
 
@@ -152,7 +151,12 @@ def city_population_test():
 
 
 if __name__ == '__main__':
-    just_country_info()
-    just_city_info(all_cities=[("New York City","America")])
-    just_city_info(all_cities=[("New York City","America"),("San Francisco","America"),("Berlin","Germany"),("Beijing","China"),("Mumbai","India")])
-    just_city_info(all_cities=None,limit=300)
+    info_country = just_country_info()
+    print(f"{info_country}")
+    info_1city = just_city_info(all_cities=[("New York City","America")])
+    print(f"Using only New York City\n{info_1city}")
+    info_5cities = just_city_info(all_cities=[("New York City","America"),("San Francisco","America"),("Berlin","Germany"),("Beijing","China"),("Mumbai","India")])
+    print(f"Using only New York City, San Francisco, Berlin, Beijing and Mumbai\n{info_5cities}")
+    limit_number = 100
+    info_manycities = just_city_info(all_cities=None,limit=limit_number)
+    print(f"Using only a nondeterministic set of {limit_number} cities drawn from WikiData.\n{info_manycities}")

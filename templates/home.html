@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    Hello anonymous user. What do they know about you? Choose the most specific option in all cases.
+    <form action = "calculation" method="post">
+        <select name="known_loc" placeholder="Nothing">
+            <option value="Country">My country of residence</option>
+            <option value="City">My city of residence</option>
+            <option value="State">That I am in a reside in a specific State of the United States</option>
+            <option value="NoLocation">They know nothing about my location</option>
+        </select><br>
+        <input type="checkbox" id="known_gender" name="known_gender" value="known_gender">
+            <label for="known_gender"> My gender identity is known</label><br>
+        <input type="checkbox" id="known_age" name="known_age" value="known_age">
+            <label for="known_age"> My age is known</label><br>
+
+        <label for="known_security">Common Security Questions (check multiple if applicable):</label>
+            <select id="known_security" name="known_security" size="4" multiple>
+              <option value="road_name">The road I grew up on</option>
+              <option value="pet_name">The name of my first pet</option>
+              <option value="high_school">Where I went to high school</option>
+              <option value="birth_city">Which city I was born in</option>
+            </select> 
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
