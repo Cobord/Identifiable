@@ -1,3 +1,4 @@
+from typing import List
 from flask import Flask, render_template, request
 from locationEntropy import just_country_info, just_city_info
 # from locationEntropy import just_country_gender, just_country_age, just_country_age_gender
@@ -11,10 +12,11 @@ def home():
 
 @app.route("/calculation", methods=["POST"])
 def calculation():
-    known_loc = request.form.get("known_loc")
-    known_gender = request.form.get("known_gender",False)
-    known_age = request.form.get("known_age",False)
-    known_security = request.form.get("known_security",[])
+    known_loc : str = request.form.get("known_loc")
+    known_gender : bool = request.form.get("known_gender",False)
+    known_age : bool= request.form.get("known_age",False)
+    known_security : List[str] = request.form.get("known_security",[])
+    info_now : str = ""
     if known_loc == "Country" and len(known_security)==0:
         if not(known_gender) and not(known_age):
             info_now = just_country_info()
