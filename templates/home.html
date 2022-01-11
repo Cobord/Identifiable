@@ -4,14 +4,29 @@
     Hello anonymous user. What do they know about you? Choose the most specific option in all cases.
     <form action = "calculation" method="post">
         
-        <select id = "known_loc" name="known_loc" onchange="enableSubmitBtn()">
+        <select id = "known_loc" name="known_loc" onchange="knownLocChange(this)">
             <option value="" selected disabled hidden>Select what is known about current location</option>
             <option value="Country">My country of residence</option>
             <option value="City">My city of residence</option>
             <option value="State">That I am in a reside in a specific State of the United States</option>
             <option value="NoLocation">They know nothing about my location</option>
         </select><br>
-        
+
+        <select class="LocationSpecificClass" name="Country" id="CountrySpecific" hidden>
+            <option value="All countries">All Countries</option>
+            <option value="__ countries">___ Countries</option>
+        </select>
+
+        <select class="LocationSpecificClass" name="City" id="CitySpecific" hidden>
+            <option value="All cities">All Cities</option>
+            <option value="__ cities">___ Cities</option>
+        </select>
+
+        <select class="LocationSpecificClass" name="State" id="StateSpecific" hidden>
+            <option value="All states">All States</option>
+            <option value="__ states">___ States</option>
+        </select>
+
         <input type="checkbox" id="known_gender" name="known_gender">
             <label for="known_gender"> My gender identity is known</label><br>
         
@@ -31,6 +46,23 @@
 {% endblock %}
 
 {% block script %}
+    function knownLocChange(selectedElement) {
+        enableSubmitBtn();
+        let selectedValue = selectedElement.options[selectedElement.selectedIndex].value;
+        let subForms = document.getElementsByClassName("LocationSpecificClass");
+        for (let i=0; i < subForms.length; i+=1)
+        {
+            if (selectedValue == subForms[i].name)
+            {
+                subForms[i].setAttribute('style','display:block')
+            }
+            else
+            {
+                subForms[i].setAttribute('style','display:none')
+            }
+        }
+    }
+
     function enableSubmitBtn() {
         document.getElementById("submit").disabled = false;
     }
