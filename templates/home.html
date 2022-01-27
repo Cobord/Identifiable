@@ -1,40 +1,55 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    Hello anonymous user. What do they know about you? Choose the most specific option in all cases.
+    Hello anonymous user. What do they know about their "Customers"/"Products"? Choose the most specific option in all cases.
     <form action = "calculation" method="post">
         
         <select id = "known_loc" name="known_loc" onchange="knownLocChange(this)">
-            <option value="" selected disabled hidden>Select what is known about current location</option>
-            <option value="Country">My country of residence</option>
-            <option value="City">My city of residence</option>
-            <option value="State">That I am in a reside in a specific State of the United States</option>
-            <option value="NoLocation">They know nothing about my location</option>
+            <option value="" selected disabled hidden>Select what is known about their users locations</option>
+            <option value="Country">Country of residence</option>
+            <option value="City">City of residence</option>
+            <option value="State">Specific State of the United States</option>
+            <option value="NoLocation">They know nothing about user locations</option>
         </select><br>
 
         <select class="LocationSpecificClass" name="Country" id="CountrySpecific" hidden>
-            <option value="All countries">All Countries</option>
-            <option value="__ countries">___ Countries</option>
+            <option value="All countries">All countries are options to choose from</option>
+            <option value="African countries">All African countries are options to choose from</option>
+            <option value="Asian countries">All Asian countries are options to choose from</option>
+            <option value="European countries">All European countries are options to choose from</option>
+            <option value="North American countries">All North American countries are options to choose from</option>
+            <option value="South American countries">All South American countries are options to choose from</option>
+            <option value="OECD countries">All OECD countries are options to choose from</option>
+            <option value="NATO countries">All NATO countries are options to choose from</option>
         </select>
 
         <select class="LocationSpecificClass" name="City" id="CitySpecific" hidden>
             <option value="All cities">All Cities</option>
-            <option value="__ cities">___ Cities</option>
+            <option value="Cities in Africa">All cities in all African countries are options to choose from</option>
+            <option value="Cities in Asia">All cities in all Asian countries are options to choose from</option>
+            <option value="Cities in Europe">All cities in all European countries are options to choose from</option>
+            <option value="Cities in North America">All cities in all North American countries are options to choose from</option>
+            <option value="Cities in South America">All cities in all South American countries are options to choose from</option>
+            <option value="Cities in OECD countries">All cities in all OECD countries are options to choose from</option>
+            <option value="Cities in NATO countries">All cities in all NATO countries are options to choose from</option>
         </select>
 
         <select class="LocationSpecificClass" name="State" id="StateSpecific" hidden>
-            <option value="All states">All States</option>
-            <option value="__ states">___ States</option>
+            <option value="All states">All States are options to choose from</option>
+            <option value="Eastern states">All states in Eastern Time Zone</option>
+            <option value="Central states">All states in Central Time Zone</option>
+            <option value="Mountain states">All states in Mountain Time Zone</option>
+            <option value="Pacific states">All states in Pacific Time Zone</option>
         </select>
 
         <input type="checkbox" id="known_gender" name="known_gender">
-            <label for="known_gender"> My gender identity is known</label><br>
+            <label for="known_gender"> Gender identities are known</label><br>
         
         <input type="checkbox" id="known_age" name="known_age" value="known_age">
-            <label for="known_age"> My age is known</label><br>
+            <label for="known_age"> Ages are known</label><br>
 
-        <label for="known_security">Common Security Questions (check multiple if applicable):</label>
-            <select id="known_security" name="known_security" size="4" multiple>
+        <label hidden for="known_security">Common Security Questions (check multiple if applicable):</label>
+            <select id="known_security" name="known_security" size="4" multiple hidden>
               <option value="road_name">The road I grew up on</option>
               <option value="pet_name">The name of my first pet</option>
               <option value="high_school">Where I went to high school</option>

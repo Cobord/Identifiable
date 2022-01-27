@@ -33,8 +33,8 @@ def just_country_info() -> str:
     num_items : int
     entropy : float
     total_population, num_items, entropy = population_entropy(country_pops)
-    return (f"Just country information provides {entropy} bits of entropy. "
-        f"It would be {log2(num_items)} if all the possibilities were equal. "
+    return (f"There are {entropy} bits of entropy in just country information.\n"
+        f"That is to say if you took the pushforward of the uniform probability measure on all people along the map which sends everyone to their country\n"
         f"{log2(total_population)} would be required for unique identification.")
 
 def get_all_cities(limit : Optional[int] = None,failLoud : bool =True) -> List[Tuple[str,str]]:
@@ -124,9 +124,12 @@ def apply_async(pool, fun, args):
     payload = dill.dumps((fun, args))
     return pool.apply_async(run_dill_encoded, (payload,))
 
-def just_city_info(all_cities : Optional[List[Tuple[str,str]]] =None,limit : Optional[int] =None) -> str:
+def just_city_info(all_cities : Optional[List[Tuple[str,str]]] =None,limit : Optional[int] =None, city_qualifier : Optional[str] = None) -> str:
     if all_cities is None:
         all_cities = get_all_cities(limit,failLoud=False)
+        city_qualifier = "any city"
+    elif city_qualifier is None:
+        raise ValueError("If a list of cities is provided there must be some description on how this subset was chosen")
     else:
         limit = len(all_cities)
     if limit is None:
@@ -143,11 +146,41 @@ def just_city_info(all_cities : Optional[List[Tuple[str,str]]] =None,limit : Opt
         num_items : int
         entropy : float
         total_population, num_items, entropy = population_entropy(city_pops)
-        return (f"Just city information provides {entropy} bits of entropy. "
-                f"It would be {log2(num_items)} if all the possibilities were equal. "
-                f"{log2(total_population)} would be required for unique identification")
+        return (f"There are {entropy} bits of entropy in just city information.\n"
+            f"That is to say if you took the pushforward of the uniform probability measure on all people in {city_qualifier} along the map which sends everyone to their city\n"
+            f"{log2(total_population)} would be required for unique identification.")
     except ValueError as e:
         breakpoint()
+
+def no_location_known(age_known : bool = False, gender_known : bool = False) -> str:
+    query : str = """
+    SELECT ?country ?countryLabel ?population
+    WHERE
+    {
+    ?country wdt:P31 wd:Q6256.
+    ?country wdt:P1082 ?population.
+    FILTER(?population > 0).
+    ?country rdfs:label ?countryLabel.
+    FILTER(LANG(?countryLabel) = "en").
+    }
+    """
+    res : Dict = qwikidata.sparql.return_sparql_query_results(query)
+    res2 : Dict = res['results']['bindings']
+    country_pops : Dict[str,int] = {item['countryLabel']['value']:int(item['population']['value']) for item in res2}
+
+    total_population : int
+    num_items : int
+    entropy : float
+    total_population, _, _ = population_entropy(country_pops)
+    if not age_known and not gender_known:
+        return (f"That is shocking in the era of surveilance capitalism.\n"
+            f"{log2(total_population)} bits of entropy would be required for unique identification")
+    elif not age_known and gender_known:
+        raise ValueError("TODO")
+    elif age_known and not gender_known:
+        raise ValueError("TODO")
+    else:
+        raise ValueError("TODO")
 
 def city_population_test():
     print(f"Berlin, Germany has {get_city_population('Berlin', 'Germany')} people")
