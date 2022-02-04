@@ -34,7 +34,7 @@ def just_country_info() -> str:
     entropy : float
     total_population, num_items, entropy = population_entropy(country_pops)
     return (f"There are {entropy} bits of entropy in just country information.\n"
-        f"That is to say if you took the pushforward of the uniform probability measure on all people along the map which sends everyone to their country\n"
+        f"That is to say if you took the pushforward of the uniform probability measure on all people along the map which sends everyone to their country.\n"
         f"{log2(total_population)} would be required for unique identification.")
 
 def get_all_cities(limit : Optional[int] = None,failLoud : bool =True) -> List[Tuple[str,str]]:
@@ -147,7 +147,7 @@ def just_city_info(all_cities : Optional[List[Tuple[str,str]]] =None,limit : Opt
         entropy : float
         total_population, num_items, entropy = population_entropy(city_pops)
         return (f"There are {entropy} bits of entropy in just city information.\n"
-            f"That is to say if you took the pushforward of the uniform probability measure on all people in {city_qualifier} along the map which sends everyone to their city\n"
+            f"That is to say if you took the pushforward of the uniform probability measure on all people in {city_qualifier} along the map which sends everyone to their city.\n"
             f"{log2(total_population)} would be required for unique identification.")
     except ValueError as e:
         breakpoint()
