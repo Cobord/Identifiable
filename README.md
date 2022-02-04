@@ -16,4 +16,4 @@ If data is available do the same with
 - Alma Mater
 - Occupation
 
-Likely data not available for combinations but should output the upper bound on joint distribution gotten by calcuating with independent marginals.
+Likely data not available for combinations but should output the upper bound gotten by calcuating with independent marginals.
