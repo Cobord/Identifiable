@@ -1,6 +1,6 @@
 from typing import List
 from flask import Flask, render_template, request
-from locationEntropy import just_country_info, just_city_info, no_location_known
+from location_entropy import just_country_info, just_city_info, no_location_known
 # from locationEntropy import just_country_gender, just_country_age, just_country_age_gender
 # from locationEntropy import just_city_gender, just_city_age, just_city_age_gender
 
