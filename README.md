@@ -1,4 +1,4 @@
-# Anonymity
+# Identifiable
 
 ## Location
 
@@ -10,10 +10,9 @@ Data bias of being on Wikidata in the first place. Locations without population 
 
 ## Other identifiers
 
-If data is available do the same with
+If data is available do the same with more such as
 
 - Birth Year
-- Alma Mater
 - Occupation
 
 Likely data not available for combinations but should output the upper bound gotten by calcuating with independent marginals.
